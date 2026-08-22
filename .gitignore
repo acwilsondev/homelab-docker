@@ -21,3 +21,6 @@ Thumbs.db
 
 # Node (markdownlint-cli2 tooling)
 node_modules/
+
+# Worktrees used for isolated agent work
+.worktrees/
