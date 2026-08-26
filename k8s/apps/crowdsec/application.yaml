@@ -8,7 +8,7 @@ spec:
   sources:
     - repoURL: https://crowdsecurity.github.io/helm-charts
       chart: crowdsec
-      targetRevision: 0.18.1
+      targetRevision: 0.24.0
       helm:
         valueFiles:
           - $values/k8s/apps/crowdsec/values.yaml
