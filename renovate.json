@@ -10,10 +10,15 @@
       "/^k8s/apps/[^/]+/values\\.yaml$/"
     ]
   },
+  "argocd": {
+    "managerFilePatterns": [
+      "/^k8s/apps/[^/]+/application\\.yaml$/"
+    ]
+  },
   "packageRules": [
     {
       "description": "Everything opens a PR for manual review - nothing auto-merges.",
-      "matchManagers": ["helm-values"],
+      "matchManagers": ["helm-values", "argocd"],
       "automerge": false
     },
     {
