@@ -1,7 +1,7 @@
 controllers:
   vikunja:
     annotations:
-      argocd.argoproj.io/sync-options: Replace=true,Force=true
+      argocd.argoproj.io/sync-options: Replace=true
     containers:
       main:
         image:
@@ -38,7 +38,7 @@ controllers:
 
   postgresql:
     annotations:
-      argocd.argoproj.io/sync-options: Replace=true,Force=true
+      argocd.argoproj.io/sync-options: Replace=true
     containers:
       main:
         image:
