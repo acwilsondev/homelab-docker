@@ -40,6 +40,10 @@ service:
 persistence:
   appdata:
     type: persistentVolumeClaim
+    # app-template v5 dropped the <release>-<key> PVC naming default that
+    # v3 used for a single-item persistence block - pin the old name so
+    # the existing PVC (and its data) is reused instead of orphaned.
+    forceRename: homarr-appdata
     accessMode: ReadWriteOnce
     size: 1Gi
     globalMounts:

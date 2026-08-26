@@ -10,10 +10,10 @@ controllers:
           # Not exposed publicly yet - placeholder until the real cutover
           # step assigns this a routable DNS name.
           SEARXNG_BASE_URL: http://localhost/
-          # app-template's Service naming for a non-"main" key ends up as
-          # <release>-<release>-<key> here, not a plain override - verified
-          # against the actual Service object rather than assumed.
-          SEARXNG_VALKEY_URL: redis://searxng-searxng-valkey:6379/0
+          # app-template v5 names a non-"main" key's Service as
+          # <release>-<key> - verified against the actual Service object
+          # rather than assumed.
+          SEARXNG_VALKEY_URL: redis://searxng-valkey:6379/0
           # Off for now: the limiter's botdetection requires a reverse proxy
           # setting X-Forwarded-For/X-Real-IP. Not exposed via ingress yet,
           # so Open WebUI's in-cluster requests hit no such proxy and were
@@ -52,7 +52,6 @@ service:
         port: 8080
   valkey:
     controller: valkey
-    nameOverride: searxng-valkey
     ports:
       redis:
         port: 6379
