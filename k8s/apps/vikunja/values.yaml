@@ -1,5 +1,7 @@
 controllers:
   vikunja:
+    annotations:
+      argocd.argoproj.io/sync-options: Replace=true
     containers:
       main:
         image:
@@ -35,6 +37,8 @@ controllers:
             memory: 512Mi
 
   postgresql:
+    annotations:
+      argocd.argoproj.io/sync-options: Replace=true
     containers:
       main:
         image:

@@ -1,5 +1,7 @@
 controllers:
   main:
+    annotations:
+      argocd.argoproj.io/sync-options: Replace=true
     pod:
       runtimeClassName: nvidia
     containers:
