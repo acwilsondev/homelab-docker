@@ -2,17 +2,52 @@ controllers:
   main:
     annotations:
       argocd.argoproj.io/sync-options: Replace=true
+    pod:
+      automountServiceAccountToken: true
     containers:
       main:
         image:
           repository: amir20/dozzle
           tag: v10.7.4
+        env:
+          DOZZLE_MODE: k8s
         resources:
           requests:
             cpu: 10m
             memory: 64Mi
           limits:
             memory: 256Mi
+    serviceAccount:
+      identifier: dozzle
+
+serviceAccount:
+  dozzle:
+    enabled: true
+
+rbac:
+  roles:
+    dozzle:
+      type: ClusterRole
+      rules:
+        - apiGroups: [""]
+          resources: ["pods", "pods/log", "nodes"]
+          verbs: ["get", "list", "watch"]
+        - apiGroups: ["apps"]
+          resources: ["deployments", "replicasets", "daemonsets", "statefulsets"]
+          verbs: ["get"]
+        - apiGroups: ["batch"]
+          resources: ["jobs", "cronjobs"]
+          verbs: ["get"]
+        - apiGroups: ["metrics.k8s.io"]
+          resources: ["pods"]
+          verbs: ["get", "list"]
+  bindings:
+    dozzle:
+      type: ClusterRoleBinding
+      roleRef:
+        identifier: dozzle
+      subjects:
+        - identifier: dozzle
 
 service:
   main:
@@ -20,12 +55,3 @@ service:
     ports:
       http:
         port: 8080
-
-persistence:
-  docker-sock:
-    type: hostPath
-    hostPath: /var/run/docker.sock
-    hostPathType: Socket
-    globalMounts:
-      - path: /var/run/docker.sock
-        readOnly: true
