@@ -8,7 +8,7 @@ controllers:
       main:
         image:
           repository: amir20/dozzle
-          tag: v10.7.4
+          tag: v10.7.5
         env:
           DOZZLE_MODE: k8s
         resources:
