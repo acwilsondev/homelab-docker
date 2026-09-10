@@ -19,6 +19,13 @@ Apps not yet on this pattern: **Vaultwarden** (has its own native OIDC
 support, not yet wired up — it is on Traefik/TLS now, just not behind
 Authelia), and **LLDAP** (internal-only by design, see above).
 
+**Session lifetime**: an un-remembered login lasts 8h, or 2h of
+inactivity, whichever comes first. Ticking "Remember me" at login
+extends it to 30 days and drops the inactivity timeout. Tuned in
+`k8s/apps/authelia/configmap.yaml` (`session.cookies`), kept moderate
+because every app sits on the public Traefik path — see
+`docs/architecture_record/2026-09-10-bring-authelia-config-under-gitops.md`.
+
 See `docs/architecture_record/2026-08-13-migrate-the-sso-critical-path.md`
 and `docs/architecture_record/2026-08-13-wire-up-oidc.md` for how this was
 actually built and verified.

@@ -18,6 +18,7 @@ happened. This file is just the index.
 8. [2026-08-13 — Cut over to Traefik + cert-manager](docs/architecture_record/2026-08-13-cutover-traefik-and-cert-manager.md) — the actual cutover, the IPv6 detour, post-cutover verification.
 9. [2026-08-13 — Close out the known migration blockers](docs/architecture_record/2026-08-13-close-out-known-blockers.md) — final status of every blocker from entry 1.
 10. [2026-08-20 — Bring CrowdSec's k3s deployment under GitOps management](docs/architecture_record/2026-08-20-bring-crowdsec-under-gitops.md) — a post-cutover gap found and fixed during a docs pass.
+11. [2026-09-10 — Bring Authelia's server config under GitOps, and loosen session lifetimes](docs/architecture_record/2026-09-10-bring-authelia-config-under-gitops.md) — same drift class as #10: `configuration.yml` was hand-applied and never deployed by git.
 
 Real production incidents (outages, root cause, fix, follow-up) are
 tracked separately under `docs/incidents/`, not here — several of the

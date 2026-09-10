@@ -1,0 +1,89 @@
+# Authelia's main server config, mounted by the chart at
+# /config/configuration.yml (see values.yaml persistence.config).
+#
+# Brought under GitOps on 2026-09-10 (see
+# docs/architecture_record/2026-09-10-bring-authelia-config-under-gitops.md).
+# Previously this lived only as a hand-applied `kubectl create configmap`
+# from rollout step 4 and a reference copy at configuration.yml, so edits
+# to the tracked file did nothing until re-applied by hand. It's a real
+# manifest now, picked up by the recursive root app like the ingress
+# objects, so config changes deploy on push.
+#
+# Secrets stay out of here: session/storage/JWT keys and the LDAP bind
+# password are in the authelia-secrets Secret (envFrom), and the OIDC
+# identity_providers config is its own hand-applied Secret. Never commit
+# those.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authelia-config
+  namespace: authelia
+data:
+  configuration.yml: |
+    theme: light
+
+    server:
+      address: 'tcp://:9091'
+
+    log:
+      level: info
+
+    totp:
+      issuer: anarchy.pizza
+
+    authentication_backend:
+      ldap:
+        implementation: 'lldap'
+        address: 'ldap://lldap.lldap.svc.cluster.local:3890'
+        base_dn: 'dc=anarchy,dc=pizza'
+        user: 'uid=authelia,ou=people,dc=anarchy,dc=pizza'
+
+    # No identity_providers.oidc in this k3s copy - forward-auth only for
+    # now (Dozzle/Uptime Kuma/SearXNG). OIDC is needed later for the
+    # native-OIDC apps (Vikunja, Homarr, Matrix), not part of this step.
+
+    access_control:
+      default_policy: deny
+      rules:
+        - domain: "dozzle.anarchy.pizza"
+          subject: "group:users"
+          policy: deny
+        - domain: "uptime.anarchy.pizza"
+          subject: "group:users"
+          policy: deny
+        - domain: "friendica.anarchy.pizza"
+          subject: "group:users"
+          policy: deny
+        - domain: "*.anarchy.pizza"
+          subject: "group:admins"
+          policy: one_factor
+        - domain: "*.anarchy.pizza"
+          subject: "group:users"
+          policy: one_factor
+
+    session:
+      cookies:
+        - domain: anarchy.pizza
+          authelia_url: "https://auth.anarchy.pizza"
+          # Un-remembered session: long enough for a normal day at the
+          # keyboard without a mid-task bounce to the login page. This
+          # stack is internet-facing (Traefik -> CrowdSec -> Authelia),
+          # so these stay moderate; the long tail is opt-in below.
+          expiration: 8h
+          inactivity: 2h
+          # Shown as the "Remember me" checkbox on the login page. When
+          # ticked, the session lasts this long regardless of inactivity.
+          remember_me: 1M
+
+    regulation:
+      max_retries: 3
+      find_time: 2m
+      ban_time: 5m
+
+    storage:
+      local:
+        path: /config/db.sqlite3
+
+    notifier:
+      filesystem:
+        filename: /config/notification.txt
