@@ -8,7 +8,7 @@ spec:
   sources:
     - repoURL: https://ananace.gitlab.io/charts
       chart: element-web
-      targetRevision: 1.4.42
+      targetRevision: 1.4.43
       helm:
         valueFiles:
           - $values/k8s/apps/element-web/values.yaml
