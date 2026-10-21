@@ -17,8 +17,15 @@
   },
   "packageRules": [
     {
-      "description": "Everything opens a PR for manual review - nothing auto-merges.",
+      "description": "Auto-merge minor and patch updates.",
       "matchManagers": ["helm-values", "argocd"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "description": "Major updates always open a PR for manual review.",
+      "matchManagers": ["helm-values", "argocd"],
+      "matchUpdateTypes": ["major"],
       "automerge": false
     },
     {
