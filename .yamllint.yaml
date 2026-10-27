@@ -1,0 +1,9 @@
+extends: relaxed
+
+rules:
+  # Existing manifests and values files predate the linter.
+  line-length: disable
+  # Helm values/Argo manifests commonly start without a `---` marker.
+  document-start: disable
+  # Windows checkouts use CRLF; CI (Linux) is the source of truth here.
+  new-lines: disable
