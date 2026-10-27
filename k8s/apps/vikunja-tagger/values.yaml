@@ -6,7 +6,7 @@ controllers:
       main:
         image:
           repository: ghcr.io/acwilsondev/vikunja-tagger
-          tag: "633774a9b2c981b71a5c47a6be093e7873b16579"
+          tag: "latest@sha256:fca2e91bcd7df7a18ea06369b2e4b4a18f9106d187d26755524becd65b4f6052"
           pullPolicy: IfNotPresent
         env:
           # In-cluster service DNS - both vikunja and webui (which bundles

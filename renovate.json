@@ -29,10 +29,12 @@
       "automerge": false
     },
     {
-      "description": "vikunja-tagger's tag is a commit SHA set by its own CI pipeline, not a version Renovate should try to bump.",
+      "description": "vikunja-tagger's CI pushes :latest on every merge to main (SHA tags aren't versions Renovate can order), so track the :latest digest and deploy new builds as soon as they land.",
       "matchManagers": ["helm-values"],
       "matchPackageNames": ["ghcr.io/acwilsondev/vikunja-tagger"],
-      "enabled": false
+      "matchUpdateTypes": ["digest"],
+      "automerge": true,
+      "schedule": ["at any time"]
     }
   ]
 }
