@@ -81,9 +81,8 @@ ALLOWNONROUTABLE`) and that Argo CD synced after the values.yaml change.
 
 ## Updating after a source change
 
-The deploy tracks the `latest` tag, so Argo CD's self-heal won't notice a
-new image on its own — restart the deployment after a push:
-
-```bash
-kubectl -n vikunja-tagger rollout restart deployment/vikunja-tagger
-```
+The image is pinned as `latest@sha256:<digest>` in `values.yaml`. Each merge
+to vikunja-tagger's `main` pushes a new `:latest`; Renovate notices the digest
+change, opens a PR, and auto-merges it, after which Argo CD rolls out the new
+image. To deploy sooner than Renovate's next run, trigger it from the
+Renovate dependency dashboard or edit the digest in `values.yaml` by hand.
